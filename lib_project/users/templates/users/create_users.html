@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block content%}
+<!-- jombotron -->
+<div class="bg-light p-5 rounded-lg m-3">
+    <h1 class="display-4">Create New Users</h1>
+    <p class="lead">Please Enter basic to register new user</p>
+    <form method="POST">
+        {{form.hidden_tag()}}
+        <div class="mb-3">
+            <!-- <label for="usernameInput" class="form-label">{{form.username.label}}</label> -->
+            {{ wtf.form_field(form.username, class='form-control', placeholder='Enter your username') }}
+            <div id="usernameHelp" class="form-text"></div>
+
+        </div>
+        
+        <div class="mb-3">
+            <!-- <label for="passwordInput" class="form-label">{{form.password.label}}</label> -->
+            {{ wtf.form_field(form.password, class='form-control', placeholder='Enter your password') }}
+        </div>
+
+        <div class="mb-3">
+            <!-- <label for="emailInput" class="form-label">{{form.email.label}}</label> -->
+            {{ wtf.form_field(form.email, class='form-control', placeholder='your@email.com') }}
+            <div id="usernameHelp" class="form-text">We'll never share your email with anyone else</div>
+
+        </div>
+
+        <div class="mb-3">
+            <!-- <label for="phoneInput" class="form-label">{{form.phone.label}}</label> -->
+            {{ wtf.form_field(form.phone, class='form-control', placeholder='Phone number') }}
+        </div>
+        {{ wtf.form_field(form.submit, class='btn btn-primary') }}
+    </form>
+</div>
+
+
+    <!--  Confirm password        
+            <div class="mb-3">
+                <label for="passwordConfirmInput" class="form-label">{{form.username.label}}</label>
+                {{ wtf.form_field(form.password, class='form-control', placeholder='Write down your thoughts here...') }}
+            </div>
+
+        <form method="POST">
+            <div class="container">
+                <div class="row">
+                </div>
+                <div class="row">
+                    {{form.username.label}} {{form.username()}}
+                </div>
+                <div class="row">
+                    {{form.password.label}} {{form.password()}}
+                </div>
+                <div class="row">
+                    {{form.email.label}} {{form.email()}}
+                </div>
+                <div class="row">
+                    {{form.phone.label}} {{form.phone()}}
+                </div>
+                <div class="row">
+                    {{form.submit()}}
+                </div>
+            </div>
+        </form> -->
+
+
+{% endblock %}

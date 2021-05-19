@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- jombotron -->
+<div class="bg-light p-5 rounded-lg m-3">
+    <h1 class="display-4">Hello, Users!</h1>
+    <p class="lead">You're entering a library manage system</p>
+    <hr class="my-4">
+    <p>It will record your bought books, and can easily expands your book shelf</p>
+    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+    <a class="btn btn-primary btn-lg" href="{{url_for('users.add_users') }}" role="button">Sign up</a>
+    <a class="btn btn-primary btn-lg" href="{{url_for('users.login') }}" role="button">Log in</a>
+    <a class="btn btn-primary btn-lg" href="{{url_for('books.search_books')}}" role="button">Search Books</a>
+
+
+</div>
+{% endblock %}

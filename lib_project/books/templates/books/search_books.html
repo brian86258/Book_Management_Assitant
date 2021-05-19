@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block content%}
+<!-- jombotron -->
+<div class="bg-light p-5 rounded-lg m-3">
+    <h1 class="display-4">Search books</h1>
+    <p class="lead">Please Enter name of books or ISBN.. </p>
+    <form method='POST'>
+        <div class="container">
+            {{form.hidden_tag()}}
+            <!-- {{form.search.label}} {{form.search()}} -->
+            <div class="mb-3">
+                {{ wtf.form_field(form.search, class='form-control', placeholder='') }}
+                <div id="searchHelp" class="form-text">ISBN or BookName</div>
+            </div>
+            {{ wtf.form_field(form.submit, class='btn btn-primary') }}
+      
+        </div>
+
+    </form>
+
+
+{% endblock %}
