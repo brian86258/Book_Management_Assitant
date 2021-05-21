@@ -66,7 +66,7 @@ class Books(db.Model):
     img_url = db.Column(db.Text)
     authors = db.Column(db.Text)
     # descr = db.Column(db.Text)
-    published_date = db.Column(db.Date)
+    published_date = db.Column(db.Text)
     created_time = db.Column(db.DateTime, default=datetime.now, nullable=False)
 
     users_owned = db.relationship("Owned_Books",backref='books')

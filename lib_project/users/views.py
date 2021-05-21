@@ -1,5 +1,5 @@
 # libproject/users/views.py
-from flask import Blueprint, render_template, redirect, url_for,flash, request
+from flask import Blueprint, render_template, redirect, url_for,flash, request,session
 from flask_login import login_user,login_required,logout_user
 from lib_project import db # from lib_project/__init__.py import db
 from lib_project.models import Users, Owned_Books
@@ -11,10 +11,9 @@ users_blueprints = Blueprint('users', __name__,template_folder='templates/users'
 # route/users/add_books
 @users_blueprints.route('/Welcome', methods=['GET','POST'])
 @login_required
-def welcome_user():
+def user_page():
     print("ssssss")
-
-    return render_template('user_page.html')
+    return render_template('user_page.html', user = session['user'])
 
 
 @users_blueprints.route('/logout', methods=['GET','POST'])
@@ -37,6 +36,7 @@ def login():
             # print(user)
             print(user.username)
             login_user(user)
+            session['user']= user
 
             # If a user was trying to visit a page that requires a login
             # flask saves that URL as 'next'.
@@ -45,7 +45,7 @@ def login():
             # So let's now check if that next exists, otherwise we'll go to
             # the welcome page.
             if next == None or not next[0]=='/':
-                next = url_for('users.welcome_user')
+                next = url_for('users.user_page')
 
             print(next)
             print(login_user(user))

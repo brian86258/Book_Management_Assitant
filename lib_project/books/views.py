@@ -30,7 +30,8 @@ def search_result():
             title = request.values['title']
             categories = request.values['categories']
             published_date = request.values['published_date']
-            published_date = datetime.datetime.strptime(published_date,'%Y-%m-%d').date()
+
+            # published_date = datetime.datetime.strptime(published_date,'%Y-%m-%d').date()
             authors = request.values['authors']
             img_link = request.values['img_link']
             ISBN_13 = request.values['ISBN_13']
