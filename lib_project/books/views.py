@@ -33,11 +33,11 @@ def search_result():
 
             # published_date = datetime.datetime.strptime(published_date,'%Y-%m-%d').date()
             authors = request.values['authors']
-            img_link = request.values['img_link']
+            img_url = request.values['img_url']
             ISBN_13 = request.values['ISBN_13']
             ISBN_10 = request.values['ISBN_10']
-            purchase_link = request.values['purchase_link']
-            new_book = Books(title,categories,published_date,authors,img_link,ISBN_13,ISBN_10,purchase_link)
+            purchase_url = request.values['purchase_url']
+            new_book = Books(title,categories,published_date,authors,img_url,ISBN_13,ISBN_10,purchase_url)
             
             db.session.add(new_book)
                     # KEY, Still need to handling error message

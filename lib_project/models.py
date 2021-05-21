@@ -54,6 +54,13 @@ class Users(db.Model, UserMixin):
             return_obj['owned_books'] = self.owned_books
 
         return return_obj
+
+    def get_books(self):
+        books = []
+        for book in self.owned_books:
+            books.append(book.B_id)
+        return books
+
             
     
 
@@ -66,20 +73,21 @@ class Books(db.Model):
     img_url = db.Column(db.Text)
     authors = db.Column(db.Text)
     # descr = db.Column(db.Text)
+    purchase_url = db.Column(db.Text)
     published_date = db.Column(db.Text)
     created_time = db.Column(db.DateTime, default=datetime.now, nullable=False)
 
     users_owned = db.relationship("Owned_Books",backref='books')
     
-    def __init__(self, title,categories,published_date,authors,img_link,ISBN_13,ISBN_10,purchase_link, created_time=datetime.now()):
+    def __init__(self, title,categories,published_date,authors,img_url,ISBN_13,ISBN_10,purchase_url, created_time=datetime.now()):
         self.title = title
         self.categories = categories
         self.published_date = published_date
         self.authors = authors
-        self.img_link = img_link
+        self.img_url = img_url
         self.ISBN_13 = ISBN_13
         self.ISBN_10 = ISBN_10
-        self.purchase_link = purchase_link
+        self.purchase_url = purchase_url
         self.created_time = created_time
 
     def __repr__(self):
@@ -97,6 +105,13 @@ class Books(db.Model):
         }
         if self.users_owned:
             return_obj['users_owned'] = self.users_owned
+    
+    def get_owners(self):
+        owners = []
+        for owner in self.users_owned:
+            owners.append(owner.U_id)
+        return owners
+
 
 
 
@@ -106,6 +121,12 @@ class Owned_Books(db.Model):
     B_id = db.Column(db.Integer, db.ForeignKey('books.B_id'), primary_key= True)
     U_id = db.Column(db.Integer, db.ForeignKey('users.U_id'), primary_key= True,)
     created_time = db.Column(db.DateTime, default=datetime.now, nullable=False)
+
+    def __init__(self, U_id,B_id, created_time=datetime.now()):
+        self.U_id = U_id
+        self.B_id = B_id
+        self.created_time = created_time
+    
 
 
 

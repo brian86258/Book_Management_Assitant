@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, redirect, url_for,flash, request,session
 from flask_login import login_user,login_required,logout_user
 from lib_project import db # from lib_project/__init__.py import db
-from lib_project.models import Users, Owned_Books
+from lib_project.models import Users, Owned_Books, Books
 from lib_project.users.forms import Creaet_Users_Form, LoginForm
 from flask_bootstrap import Bootstrap
 
@@ -12,8 +12,16 @@ users_blueprints = Blueprint('users', __name__,template_folder='templates/users'
 @users_blueprints.route('/Welcome', methods=['GET','POST'])
 @login_required
 def user_page():
-    print("ssssss")
-    return render_template('user_page.html', user = session['user'])
+    U_id = session['user_U_id']
+    user = Users.query.filter_by(U_id=U_id).first()
+    owned_books_id = user.get_books()
+    owned_books = Books.query.filter(
+        Books.B_id.in_(owned_books_id)
+    )
+    owned_books = [vars(b) for b in owned_books]
+
+    return render_template('user_page.html', owned_books = owned_books)
+
 
 
 @users_blueprints.route('/logout', methods=['GET','POST'])
@@ -34,9 +42,9 @@ def login():
 
         if user.check_password(form.password.data) and user is not None:
             # print(user)
-            print(user.username)
+            # print(user.username)
             login_user(user)
-            session['user']= user
+            session['user_U_id']= user.U_id
 
             # If a user was trying to visit a page that requires a login
             # flask saves that URL as 'next'.
@@ -47,8 +55,8 @@ def login():
             if next == None or not next[0]=='/':
                 next = url_for('users.user_page')
 
-            print(next)
-            print(login_user(user))
+            # print(next)
+            # print(login_user(user))
             return redirect(next)
         else:
             print("Fail login")
