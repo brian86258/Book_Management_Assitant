@@ -21,6 +21,8 @@ def user_page():
     owned_books = [vars(b) for b in owned_books]
 
     return render_template('user_page.html', owned_books = owned_books)
+    # return render_template('scann.html', owned_books = owned_books)
+
 
 
 

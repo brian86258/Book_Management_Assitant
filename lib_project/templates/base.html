@@ -27,7 +27,7 @@
     <!-- Nav BAR -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand" href="{{url_for('index') }}">
             NavBar
             <!-- Logo img -->
             <!-- <img src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24"> -->
@@ -37,11 +37,22 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+
+              {% if current_user.is_authenticated %}
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{url_for('index') }}">Home</a>
+                <a class="nav-link active" aria-current="page" href="{{url_for('users.user_page') }}">Home</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('users.logout') }}">Sign out</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('books.search_books') }}">Add Books</a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{url_for('index') }}">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('users.login') }}">Log in</a>
@@ -49,10 +60,9 @@
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('users.add_users') }}">Sign up</a>
               </li>
+              {% endif %}
 
-
-
-              <li class="nav-item dropdown">
+              <!-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Dropdown
                 </a>
@@ -65,7 +75,8 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-              </li>
+              </li> -->
+
             </ul>
             <form class="d-flex">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

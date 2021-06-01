@@ -58,10 +58,8 @@ def search_book(search):
             published_date = ""
 
         if 'imageLinks' in item_info:
-            img_link = item_info['imageLinks']['smallThumbnail']
-            # img_link = item_info['imageLinks']['thumbnail']
-
-            
+            img_link = item_info['imageLinks']['smallThumbnail'] or item_info['imageLinks']['thumbnail']
+            # img_link = 
         else:
             img_link = ""
 
