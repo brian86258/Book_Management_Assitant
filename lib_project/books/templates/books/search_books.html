@@ -1,10 +1,28 @@
 {% extends 'base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
 {% block content%}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type=text/javascript>
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script src="{{url_for('static',filename='js/webcam.min.js')}}"></script>
+<!-- 
+<style>
+    *{
+    border: 1px solid #000  
+    }
+</style> --> -->
+
 <!-- jombotron -->
 <div class="bg-light p-5 rounded-lg m-3">
     <h1 class="display-4">Search books</h1>
-    <p class="lead">Please Enter name of books or ISBN.. </p>
+    <p class="lead">Please Enter name of books or ISBN.. 
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Use camera to detect
+        </button>
+    </p>
+
     <form method='POST'>
         <div class="container">
             {{form.hidden_tag()}}
@@ -20,4 +38,74 @@
     </form>
 
 
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Barcode/Title scan</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        <!-- Web Cam -->
+            <div id="my_photo_booth">
+                <div id="my_camera"></div>
+                    <!-- Configure a few settings and attach camera -->
+                    <script language="JavaScript">
+                        Webcam.set({
+                            // live preview size
+                            width: 720,
+                            height: 1280,
+ 
+                            // device capture size
+                            dest_width: 720,
+                            dest_height: 1280,
+                            // final cropped size
+                            crop_width: 720,
+                            crop_height: 1280,
+                            // format and quality
+                            image_format: 'jpeg',
+                            jpg_quality: 100,
+                            // flip horizontal (mirror mode)
+                            flip_horiz: false,
+                            constraints: {
+                                video: true,
+                                facingMode: "environment"
+                            }
+                        });
+                        Webcam.attach( '#my_camera' );
+                    </script>
+
+                    <div id="results" style="display:none">
+                        <!-- Your captured image will appear here... -->
+                    </div>
+
+
+
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <!-- A button for taking snaps -->
+            <form>
+                <div id="Response"> TEST</div>
+                <div id="pre_take_buttons">
+                    <!-- This button is shown before the user takes a snapshot -->
+                    <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Close</button>
+                    <input type=button class="btn btn-primary btn-lg " value="CAPTURE" onClick="preview_snapshot()">
+                </div>
+
+                <div id="post_take_buttons" style="display:none">
+                    <!-- These buttons are shown after a snapshot is taken -->
+                    <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Close</button>
+                    <input type=button class="btn btn-primary btn-lg responsive-width" value="&lt; AGAIN" onClick="cancel_preview()">
+                    <input type=button class="btn btn-primary btn-lg responsive-width" value="SAVE &gt;" onClick="save_photo()" style="font-weight:bold;">
+                </div>
+            </form>
+            <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Understood</button> -->
+        </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

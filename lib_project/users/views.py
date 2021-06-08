@@ -18,8 +18,8 @@ def user_page():
     owned_books = Books.query.filter(
         Books.B_id.in_(owned_books_id)
     )
-    owned_books = [vars(b) for b in owned_books]
-
+    # owned_books = [vars(b) for b in owned_books]
+    print(owned_books)
     return render_template('user_page.html', owned_books = owned_books)
     # return render_template('scann.html', owned_books = owned_books)
 

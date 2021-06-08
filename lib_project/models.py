@@ -72,6 +72,7 @@ class Books(db.Model):
     title = db.Column(db.Text)
     img_url = db.Column(db.Text)
     authors = db.Column(db.Text)
+    categories = db.Column(db.Text)
     # descr = db.Column(db.Text)
     purchase_url = db.Column(db.Text)
     published_date = db.Column(db.Text)
@@ -97,10 +98,10 @@ class Books(db.Model):
             "title": self.title,
             "published_date" : self.published_date,
             'authors': self.authors,
-            "img_link": self.img_link,
+            "img_link": self.img_url,
             'ISBN_13': self.ISBN_13,
             'ISBN_10': self.ISBN_10,
-            "purchase_link": self.purchase_link,
+            "purchase_link": self.purchase_url,
             "created_time": self.created_time 
         }
         if self.users_owned:

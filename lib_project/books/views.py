@@ -46,6 +46,9 @@ def search_result():
             Book = Books.query.filter(
                 (Books.ISBN_10 == ISBN_10) | (Books.ISBN_13 == ISBN_13) | (Books.title == title)
             ).first()
+            new_book = Books(title,categories,published_date,authors,img_url,ISBN_13,ISBN_10,purchase_url)
+            db.session.add(new_book)
+            db.session.commit()
 
             # If this Book is not in the shelves, add to the shelves
             if not Book:
@@ -69,11 +72,11 @@ def search_result():
                 print(" ALREADY IN SHELF")
                 B_id = Book.B_id
                 # print(Book.B_id)
-                # return redirect(url_for('index'))
+            # return redirect(url_for('index'))
             
 
         # After in the shelves build up connection with users
-        # print(session['user_U_id'])
+        print(session['user_U_id'])
         if session['user_U_id']:
             U_id = session['user_U_id']
             print(U_id)

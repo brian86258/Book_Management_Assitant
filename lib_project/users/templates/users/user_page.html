@@ -1,31 +1,60 @@
 {% extends "base.html" %}
 {% block content %}
+<!-- <style>
+    *{
+    border: 1px solid #000  
+    }
+</style> -->
+
 <div class="bg-light p-5 rounded-lg m-3">
     <h1 class="display-4">Welcome</h1>
     <p class="lead">You've sucessfully loged in!</p>
+</div>
+<div class="row row-cols-3" style="display: flex; flex-wrap: wrap; width: 100vw;">
+    {% for book in owned_books %}
+    <div class="col">
+        <div class="card " style="width: 20vw;">
+            <img src="{{book['img_url']}}" class="img-thumbnail" alt="Image not found" onerror="this.onerror=null;this.src='imageNotFound.png';" style=" width: 100%;  height: auto; object-fit: cover;">
+            <div class="card-body">
+                <h5 class="card-title">{{book['title']}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{book['authors']}}</h6>
+                <p class="card-text">Categories : {{book['categories']}}</p>
+                <div class="row">
+                    <div class="col">
+                        <a href="{{book['purchase_url']}}" class="btn btn-primary">Purchase </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 
-    <div class="container">
-        <div class="row row-cols-3" style=" display: flex; flex-wrap: wrap;">
+</div>
+
+
+<!-- 
+    <div class="container-lg">
+        <div class="row row-cols-3" style="display: box; flex-wrap: wrap; width: 100vw;">
             {% for book in owned_books %}
             <div class="col">
                 <div class="card " style="width: 20vw;">
-                    <img src="{{book['img_url']}}" class="card-img-top" alt="Image not found" onerror="this.onerror=null;this.src='imageNotFound.png';" style=" width: 100%;  height: auto; object-fit: cover;">
+                    <img src="{{book['img_url']}}" class="img-thumbnail" alt="Image not found" onerror="this.onerror=null;this.src='imageNotFound.png';" style=" width: 100%;  height: auto; object-fit: cover;">
                     <div class="card-body">
-                    <h5 class="card-title">{{book['title']}}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{book['authors']}}</h6>
-                    <p class="card-text">Categories : {{book['categories']}}</p>
-                    <div class="row">
-                        <div class="col">
-                            <a href="{{book['purchase_link']}}" class="btn btn-primary">Purchase </a>
+                        <h5 class="card-title">{{book['title']}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{book['authors']}}</h6>
+                        <p class="card-text">Categories : {{book['categories']}}</p>
+                        <div class="row">
+                            <div class="col">
+                                <a href="{{book['purchase_url']}}" class="btn btn-primary">Purchase </a>
+                            </div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
+            dddd
             {% endfor %}
         </div>
-    </div>
+    </div> -->
 
-</div>
+
 {% endblock %}
