@@ -1,11 +1,16 @@
 from operator import or_
-from flask import Blueprint, render_template, redirect, url_for,flash, session, request
+from flask import Blueprint, jsonify,render_template, redirect, url_for,flash, session, request
 from lib_project import db # from lib_project/__init__.py import db
 from lib_project.models import Books, Owned_Books,Users
 from lib_project.books.forms import Search_Book_Form
 from lib_project.search_books import search_book
 from sqlalchemy import func
 import datetime
+import cv2
+from lib_project.books.bar_scan import barcode
+import os
+import base64
+import numpy as np
 
 books_blueprints = Blueprint('books', __name__,template_folder='templates/books')
 
@@ -22,7 +27,45 @@ def search_books():
         # print(books_list)
         return redirect(url_for('books.search_result'))
         # return render_template('results.html', books_list = books_list)
-    return render_template('search_books.html', form = form)
+    return render_template('search_books.html', form = form, request = request)
+
+count = 0
+@books_blueprints.route('/_photo_cap',methods=['GET','POST'])
+def photo_cap():
+    photo_base64 = request.get_json()
+    header, encoded = photo_base64.split(",", 1)
+    binary_data = base64.b64decode(encoded)
+    img_array = np.fromstring(binary_data,np.uint8) # 轉換np序列
+    image=cv2.imdecode(img_array,cv2.COLOR_BGR2RGB)  # 轉換Opencv格式
+    # im = cv2.imread(os.path.join("./static/images/captures",image_name))
+    # image=cv2.imread(os.path.join("/tmp/images",image_name))
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    # gray = ImageEnhance.Brightness(gray).enhance(2.0)#增加亮度
+    # gray = ImageEnhance.Sharpness(gray).enhance(25.0)#銳利化
+    # gray = ImageEnhance.Contrast(gray).enhance(10.0)#增加對比度
+    texts = barcode(gray)
+    global count
+    count +=1
+    res = ''
+    # print(texts)
+    if texts==[]:
+        print("未識別成功")
+        res +='辨別失敗'
+    else:
+
+        for text in texts:
+            tt = text.data.decode("utf-8")
+            res += tt
+        print("識別成功")
+        print(tt)
+    # de_obj = decode(img)
+    response = "{} DETECT OBJ: {}".format(count,res)
+    # facial recognition operations
+    # response = 'de_obj'
+
+    # return redirect(url_for('index'))
+
+    return jsonify(response=response)
 
 @books_blueprints.route('/search_result', methods=['GET',"POST"])
 def search_result():

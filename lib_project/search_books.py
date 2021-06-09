@@ -23,74 +23,89 @@ def search_book(search):
 
     # retrieve books metadata
     results = json.loads(r.text)
-    if results['totalItems'] == 0:
-        print("Could not find such books!!")
-        return None
-
     books_list = []
-    for item in results['items']:
-        if 'volumeInfo' not in item:
-            print(item)
-            continue
-        item_info = item['volumeInfo']
-        # Parsing
 
-        if 'authors' in item_info:
-            authors = item_info['authors']
-        else:
-            authors = ''
+    if 'totalItems' in results:
+        if results['totalItems'] == 0:
+            print("Could not find such books!!")
+            return None
 
-        if 'categories' in item_info:
-            categories = item_info['categories']
-        else:
-            categories = ""
+        for item in results['items']:
+            if 'volumeInfo' not in item:
+                print(item)
+                continue
+            item_info = item['volumeInfo']
+            # Parsing
 
-        if 'title' in item_info:
-            title = item_info['title']
-            if 'subtitle' in item_info:
-                title += ' '+ item_info['subtitle']
-        else:
-            title = ""
+            if 'authors' in item_info:
+                authors = item_info['authors']
+            else:
+                authors = ''
 
-        if 'publishedDate' in item_info:
-            published_date = item_info['publishedDate']
-        else:
-            published_date = ""
+            if 'categories' in item_info:
+                categories = item_info['categories']
+            else:
+                categories = ""
 
-        if 'imageLinks' in item_info:
-            img_link = item_info['imageLinks']['smallThumbnail'] or item_info['imageLinks']['thumbnail']
-            # img_link = 
-        else:
-            img_link = ""
+            if 'title' in item_info:
+                title = item_info['title']
+                if 'subtitle' in item_info:
+                    title += ' '+ item_info['subtitle']
+            else:
+                title = ""
+
+            if 'publishedDate' in item_info:
+                published_date = item_info['publishedDate']
+            else:
+                published_date = ""
+
+            if 'imageLinks' in item_info:
+                img_link = item_info['imageLinks']['smallThumbnail'] or item_info['imageLinks']['thumbnail']
+                # img_link = 
+            else:
+                img_link = ""
 
 
-        ISBN_10 = ''
-        ISBN_13 = ''
+            ISBN_10 = ''
+            ISBN_13 = ''
 
-        if 'industryIdentifiers' in item_info:
-            identifiers = item_info['industryIdentifiers']
-            for iden in identifiers:
-                if iden['type'] == 'ISBN_13':
-                    ISBN_13 = iden['identifier']
-                elif iden['type'] == 'ISBN_10':
-                    ISBN_10 = iden['identifier']
-        else:
-            identifiers = ''
+            if 'industryIdentifiers' in item_info:
+                identifiers = item_info['industryIdentifiers']
+                for iden in identifiers:
+                    if iden['type'] == 'ISBN_13':
+                        ISBN_13 = iden['identifier']
+                    elif iden['type'] == 'ISBN_10':
+                        ISBN_10 = iden['identifier']
+            else:
+                identifiers = ''
 
-        if "canonicalVolumeLink" in item_info:
-            purchase_link = item_info["canonicalVolumeLink"]
-        else:
-            purchase_link = ''
+            if "canonicalVolumeLink" in item_info:
+                purchase_link = item_info["canonicalVolumeLink"]
+            else:
+                purchase_link = ''
 
+            obj = {
+                "categories" : categories,
+                "title": title,
+                "published_date" : published_date,
+                'authors': authors,
+                "img_link": img_link,
+                'ISBN_13': ISBN_13,
+                'ISBN_10': ISBN_10,
+                "purchase_link": purchase_link
+            }
+            books_list.append(obj)
+    else:
+        # Cannot find any info
         obj = {
-            "categories" : categories,
-            "title": title,
-            "published_date" : published_date,
-            'authors': authors,
-            "img_link": img_link,
-            'ISBN_13': ISBN_13,
-            'ISBN_10': ISBN_10,
-            "purchase_link": purchase_link
+            "categories" : '',
+            "title": '',
+            "published_date" : '',
+            'authors': '',
+            "img_link": '',
+            'ISBN_13': '',
+            'ISBN_10': '',
+            "purchase_link": ''
         }
         books_list.append(obj)
 

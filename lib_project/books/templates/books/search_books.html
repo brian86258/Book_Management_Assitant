@@ -3,22 +3,27 @@
 {% block content%}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type=text/javascript>
-    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    var ss= 'SSS';
+    console.log($SCRIPT_ROOT);
+    console.log(ss);
+
+
 </script>
 <script src="{{url_for('static',filename='js/webcam.min.js')}}"></script>
-<!-- 
-<style>
+
+<!-- <style>
     *{
     border: 1px solid #000  
     }
-</style> --> -->
+</style>  -->
 
 <!-- jombotron -->
 <div class="bg-light p-5 rounded-lg m-3">
     <h1 class="display-4">Search books</h1>
     <p class="lead">Please Enter name of books or ISBN.. 
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onClick="initialize_webcam()">
             Use camera to detect
         </button>
     </p>
@@ -28,7 +33,7 @@
             {{form.hidden_tag()}}
             <!-- {{form.search.label}} {{form.search()}} -->
             <div class="mb-3">
-                {{ wtf.form_field(form.search, class='form-control', placeholder='') }}
+                {{ wtf.form_field(form.search, class='form-control', id="searchBar",placeholder='') }}
                 <div id="searchHelp" class="form-text">ISBN or BookName</div>
             </div>
             {{ wtf.form_field(form.submit, class='btn btn-primary') }}
@@ -44,44 +49,12 @@
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="staticBackdropLabel">Barcode/Title scan</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="stop_camera()"></button>
         </div>
         <div class="modal-body">
         <!-- Web Cam -->
             <div id="my_photo_booth">
-                <div id="my_camera"></div>
-                    <!-- Configure a few settings and attach camera -->
-                    <script language="JavaScript">
-                        Webcam.set({
-                            // live preview size
-                            width: 720,
-                            height: 1280,
- 
-                            // device capture size
-                            dest_width: 720,
-                            dest_height: 1280,
-                            // final cropped size
-                            crop_width: 720,
-                            crop_height: 1280,
-                            // format and quality
-                            image_format: 'jpeg',
-                            jpg_quality: 100,
-                            // flip horizontal (mirror mode)
-                            flip_horiz: false,
-                            constraints: {
-                                video: true,
-                                facingMode: "environment"
-                            }
-                        });
-                        Webcam.attach( '#my_camera' );
-                    </script>
-
-                    <div id="results" style="display:none">
-                        <!-- Your captured image will appear here... -->
-                    </div>
-
-
-
+                <div id="my_camera" style="width: 100% !important;height: auto !important; min-width: 100px; min-height: 100px;"></div>
             </div>
 
         </div>
@@ -91,13 +64,13 @@
                 <div id="Response"> TEST</div>
                 <div id="pre_take_buttons">
                     <!-- This button is shown before the user takes a snapshot -->
-                    <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal" onClick="stop_camera()">Close</button>
                     <input type=button class="btn btn-primary btn-lg " value="CAPTURE" onClick="preview_snapshot()">
                 </div>
 
                 <div id="post_take_buttons" style="display:none">
                     <!-- These buttons are shown after a snapshot is taken -->
-                    <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal" onClick="stop_camera()">Close</button>
                     <input type=button class="btn btn-primary btn-lg responsive-width" value="&lt; AGAIN" onClick="cancel_preview()">
                     <input type=button class="btn btn-primary btn-lg responsive-width" value="SAVE &gt;" onClick="save_photo()" style="font-weight:bold;">
                 </div>
@@ -108,4 +81,113 @@
         </div>
     </div>
 </div>
+
+<!-- Handle captured file -->
+<script language="JavaScript">
+    // preload shutter audio clip
+    // var shutter = new Audio();
+    // shutter.autoplay = false;
+    // shutter.src = navigator.userAgent.match(/Firefox/) ? '/static/audio/shutter.ogg' : '/static/audio/shutter.mp3';
+
+    // Configure a few settings and attach camera
+    function stop_camera(){
+        console.log("Turn off Camera");
+        Webcam.reset()	;
+
+    }
+    function initialize_webcam(){
+        console.log("Turn on Camera");
+        Webcam.set({
+            // // live preview size
+            width: 720,
+            height: 1280,
+
+            // device capture size
+            dest_width: 720,
+            dest_height: 1280,
+            // final cropped size
+            crop_width: 720,
+            crop_height: 1280,
+            image_format: 'jpeg',
+            jpg_quality: 100,
+            // flip horizontal (mirror mode)
+            flip_horiz: false,
+            constraints: {
+                video: true,
+                facingMode: "environment"
+            }
+        });
+        Webcam.attach('#my_camera');
+    }
+
+    function preview_snapshot() {
+        // play sound effect
+        // try { shutter.currentTime = 0; } catch(e) {;} // fails in IE
+        // shutter.play();
+
+        // freeze camera so user can preview current frame
+        Webcam.freeze();
+
+        // swap button sets
+        document.getElementById('pre_take_buttons').style.display = 'none';
+        document.getElementById('post_take_buttons').style.display = '';
+    }
+
+    function cancel_preview() {
+        // cancel preview freeze and return to live camera view
+        Webcam.unfreeze();
+
+        // swap buttons back to first set
+        document.getElementById('pre_take_buttons').style.display = '';
+        document.getElementById('post_take_buttons').style.display = 'none';
+    }
+
+    function save_photo() {
+        // actually snap photo (from preview freeze).
+        Webcam.snap( function(data_uri) {
+            // display results in page
+            // console.log(data_uri);
+            url = "http://127.0.0.1:5000/books/_photo_cap " 
+            // console.log($SCRIPT_ROOT + '/_photo_cap');
+            console.log(url)
+            
+
+            // shut down camera, stop capturing
+            // Webcam.reset();
+
+            // $.getJSON($SCRIPT_ROOT + '/_photo_cap', {
+            //     photo_cap: data_uri,
+            // },function(data){
+            //     var response = data.response;
+            //     document.getElementById('Response').textContent = response;
+            // });
+
+            $.ajax({ 
+                // url: $SCRIPT_ROOT + '/_photo_cap', 
+                url: url, 
+                type: "POST", 
+                contentType: "application/json", 
+                data: JSON.stringify(data_uri), 
+                success: function(data){
+                            var response = data.response;
+                            console.log(response);
+                            document.getElementById('searchBar').placeholder = response;
+                            document.getElementById('Response').textContent = response;
+
+                        },
+                error: function(error) {
+                    console.log(error);
+                }
+            
+            }); 
+
+        } );
+        Webcam.unfreeze();
+
+
+        document.getElementById('pre_take_buttons').style.display = '';
+        document.getElementById('post_take_buttons').style.display = 'none';
+    }
+</script>
+
 {% endblock %}
