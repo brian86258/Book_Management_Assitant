@@ -10,6 +10,12 @@
     <h1 class="display-4">Welcome</h1>
     <p class="lead">You've sucessfully loged in!</p>
 </div>
+
+<form class="d-flex" method="post">
+    <input class="form-control me-2" name="book" placeholder="Search the book by name" aria-label="Search">
+    <button class="btn btn-outline-success" name='send' type="submit" value='search_books'>Search</button>
+</form>
+<br>
 <div class="row row-cols-3" style="display: flex; flex-wrap: wrap; width: 100vw;">
     {% for book in owned_books %}
     <div class="col">
@@ -21,8 +27,16 @@
                 <p class="card-text">Categories : {{book['categories']}}</p>
                 <div class="row">
                     <div class="col">
-                        <a href="{{book['purchase_url']}}" class="btn btn-primary">Purchase </a>
+                        <a href="{{book['purchase_url']}}" class="btn btn-primary" target="_blank">Purchase </a>
+      
                     </div>
+                    <div class="col">
+                        <form method="post">
+                            <input type="hidden" name="del_B_id" value="{{book['B_id']}}">
+                            <input type="submit" name='send' class="btn btn-secondary " value='delete'>
+                        </form>
+                    </div>
+
                 </div>
             </div>
         </div>

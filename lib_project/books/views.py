@@ -90,9 +90,7 @@ def search_result():
                 (Books.ISBN_10 == ISBN_10) | (Books.ISBN_13 == ISBN_13) | (Books.title == title)
             ).first()
             new_book = Books(title,categories,published_date,authors,img_url,ISBN_13,ISBN_10,purchase_url)
-            db.session.add(new_book)
-            db.session.commit()
-
+ 
             # If this Book is not in the shelves, add to the shelves
             if not Book:
                 new_book = Books(title,categories,published_date,authors,img_url,ISBN_13,ISBN_10,purchase_url)

@@ -21,7 +21,7 @@
                     <p class="card-text">Categories : {{book['categories']}}</p>
                     <div class="row">
                         <div class="col">
-                            <a href="{{book['purchase_link']}}" class="btn btn-primary">Purchase </a>
+                            <a href="{{book['purchase_link']}}" class="btn btn-primary" target="_blank">Purchase </a>
                         </div>
                         <div class="col">
 
@@ -34,7 +34,7 @@
                                 <input type="hidden" name="published_date" value="{{book['published_date']}}">
                                 <input type="hidden" name="ISBN_13" value="{{book['ISBN_13']}}">
                                 <input type="hidden" name="ISBN_10" value="{{book['ISBN_10']}}">
-                                <input type="submit" name='send' class="btn btn-primary " value='Add to Shelves'>
+                                <input type="submit" name='send' class="btn btn-info " value='Add to Shelves'>
                             </form>
 
                         </div>

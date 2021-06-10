@@ -2,19 +2,19 @@ from lib_project.models import Users,Books,Owned_Books
 from lib_project import db # from lib_project/__init__.py import db
 
 # *** ADD DATA****
-user = Users.query.filter_by(username = 'manager').all()
-books = Books.query.filter(
-    Books.ISBN_13.like("%986%")
-)
-for u in user:
-    if u:
-        print('-',u.U_id)
-        for b in books:
-            print('*',b.B_id)
-            new_owned_book = Owned_Books(u.U_id, b.B_id)
+# user = Users.query.filter_by(username = 'manager').all()
+# books = Books.query.filter(
+#     Books.ISBN_13.like("%986%")
+# )
+# for u in user:
+#     if u:
+#         print('-',u.U_id)
+#         for b in books:
+#             print('*',b.B_id)
+#             new_owned_book = Owned_Books(u.U_id, b.B_id)
             
-            db.session.add(new_owned_book)
-            db.session.commit()
+#             db.session.add(new_owned_book)
+#             db.session.commit()
 
 
 # user = Users.query.filter_by(username = 'manager').first()
@@ -35,7 +35,13 @@ for u in user:
 #     print(book)
     # print(type(vars(book)))
 
+all_user = Users.query.all()
+all_user = Users.query.with_entities(Users.username, Users.email).all()
 
+# all_user = [ vars(user) for user in all_user]
+print(all_user)
+ 
+print('manger' in all_user)
 
 
 
