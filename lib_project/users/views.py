@@ -62,7 +62,7 @@ def login():
         # Grab user from "user" by username
         user = Users.query.filter_by(username=form.username.data).first()
 
-        if user.check_password(form.password.data) and user is not None:
+        if user and user.check_password(form.password.data):
             # print(user)
             # print(user.username)
             login_user(user)
@@ -81,22 +81,24 @@ def login():
             # print(login_user(user))
             return redirect(next)
         else:
-            print("Fail login")
+            return render_template('login.html', form=form,login_message = "Failed Login. Please Try Again!")
 
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form, login_message="")
 
 
 @users_blueprints.route('/add_users', methods=['GET','POST'])
 def add_users():
     form = Creaet_Users_Form()
-    err_msg = ''
-
+    usr_err_msg = ''
+    email_err_msg = ''
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
         email = form.email.data
         phone = form.phone.data
-        user = Users.query.filter_by(username=form.username.data).first()
+        user = Users.query.filter(
+                (Users.email == email) | (Users.username == username) 
+            ).first()
         if not user:
             new_user = Users(username,password,email,phone)
             db.session.add(new_user)
@@ -109,9 +111,14 @@ def add_users():
                 # flash("Something wrong when creating NEW USERS")
                 # flash("Fowllowing is error message", e)
                 err_msg = e
-        else:
-            err_msg = "Sorry, this username already been used, please use another one"
-            print("sss")
+        else: # If such user exist
+            if email == user.email:
+                email_err_msg = "This email address has already been used, please use another one"
+            if username == user.username:
+                usr_err_msg = "This username already has been used, please use another one"
+
+            return render_template('create_users.html', form = form, usr_err_msg = usr_err_msg, email_err_msg = email_err_msg)
 
 
-    return render_template('create_users.html', form = form, err_msg = err_msg)
+
+    return render_template('create_users.html', form = form, usr_err_msg = usr_err_msg, email_err_msg = email_err_msg)

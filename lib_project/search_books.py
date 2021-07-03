@@ -1,10 +1,8 @@
 from __future__ import print_function
 
 import requests
-import matplotlib.pyplot as plt
 import json
 # Barcode Detect
-import cv2
 import pyzbar.pyzbar as pyzbar
 import numpy as np
 

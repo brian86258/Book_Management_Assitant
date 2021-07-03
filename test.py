@@ -1,6 +1,17 @@
 from lib_project.models import Users,Books,Owned_Books
 from lib_project import db # from lib_project/__init__.py import db
 
+
+username = "manager"
+email = '123@33.com'
+
+user = Users.query.filter(
+        (Users.email == email) | (Users.username == username) 
+    ).first()
+print(user.username)
+print(user.email)
+
+
 # *** ADD DATA****
 # user = Users.query.filter_by(username = 'manager').all()
 # books = Books.query.filter(
@@ -35,13 +46,13 @@ from lib_project import db # from lib_project/__init__.py import db
 #     print(book)
     # print(type(vars(book)))
 
-all_user = Users.query.all()
-all_user = Users.query.with_entities(Users.username, Users.email).all()
+# all_user = Users.query.all()
+# all_user = Users.query.with_entities(Users.username, Users.email).all()
 
-# all_user = [ vars(user) for user in all_user]
-print(all_user)
+# # all_user = [ vars(user) for user in all_user]
+# print(all_user)
  
-print('manger' in all_user)
+# print('manger' in all_user)
 
 
 

@@ -10,7 +10,7 @@
         <div class="mb-3">
             <!-- <label for="usernameInput" class="form-label">{{form.username.label}}</label> -->
             {{ wtf.form_field(form.username, class='form-control', placeholder='Enter your username') }}
-            <div id="usernameHelp" class="text-danger">{{err_msg}}</div>
+            <div id="usernameHelp" class="text-danger" style="color:red">{{usr_err_msg}}</div>
 
         </div>
         
@@ -22,7 +22,7 @@
         <div class="mb-3">
             <!-- <label for="emailInput" class="form-label">{{form.email.label}}</label> -->
             {{ wtf.form_field(form.email, class='form-control', placeholder='your@email.com') }}
-            <div id="usernameHelp" class="form-text">We'll never share your email with anyone else</div>
+            <div id="emailHelp" class="text-danger" style="color:red">{{email_err_msg}}</div>
 
         </div>
 

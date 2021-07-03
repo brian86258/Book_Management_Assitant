@@ -9,7 +9,7 @@
         <div class="mb-3">
             <!-- <label for="usernameInput" class="form-label">{{form.username.label}}</label> -->
             {{ wtf.form_field(form.username, class='form-control', placeholder='Enter your username') }}
-            <div id="usernameHelp" class="form-text"></div>
+            <div id="usernameHelp" class="form-text" style="color:red;">{{login_message}}</div>
 
         </div>
         

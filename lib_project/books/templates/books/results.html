@@ -34,7 +34,11 @@
                                 <input type="hidden" name="published_date" value="{{book['published_date']}}">
                                 <input type="hidden" name="ISBN_13" value="{{book['ISBN_13']}}">
                                 <input type="hidden" name="ISBN_10" value="{{book['ISBN_10']}}">
+                                {% if current_user.is_authenticated %}
                                 <input type="submit" name='send' class="btn btn-info " value='Add to Shelves'>
+                                {% else %}
+                                {% endif %}
+
                             </form>
 
                         </div>
